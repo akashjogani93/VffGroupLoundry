@@ -16,29 +16,16 @@ include('connect.php');?>
     </div>
 </div>
 <?php
-                    $id = 0;
+                    $id = $idd = 0;
                     $sql = "SELECT max(id) FROM cust_detail";
                     $retval = mysqli_query($conn, $sql );
-
-                    if(! $retval ) {
-                        die('Could not get data: ' . mysqli_error($conn));
-                    }
-                    while($row = mysqli_fetch_assoc($retval)) {
-                        $id=$row['max(id)'];
-                        $id++;
-                    }
+                    $row = mysqli_fetch_assoc($retval);
+                    $id = $row['max(id)']+1;
             
-                    $idd = 0;
-                    $sql = "SELECT max(id) FROM orderdel";
+                    $sql = "SELECT MAX(`coId`) FROM `couterorder`;";
                     $retval = mysqli_query($conn, $sql );
-
-                    if(! $retval ) {
-                        die('Could not get data: ' . mysqli_error($conn));
-                    }
-                    while($row = mysqli_fetch_assoc($retval)) {
-                        $idd=$row['max(id)'];
-                        $idd++;
-                    }
+                    $row = mysqli_fetch_assoc($retval);
+                    $idd = $row['MAX(`coId`)']+1;
                 ?>
 
 <main class="page-content">
@@ -167,7 +154,7 @@ include('connect.php');?>
                 <div class="group-form col-md-3">
                     <label class="form_label" for="company_name">Order Id</label>
                     <input type="text" readonly class="form-control form-control-sm" name="id" id="orderId"
-                        value="<?php echo $id; ?>" placeholder=" Id">
+                        value="<?php echo $idd; ?>" placeholder=" Id">
                 </div>
 
                 <div class="group-form col-md-3">
@@ -329,7 +316,7 @@ include('connect.php');?>
 
                         <productWeight style="display: none;">
                             <label class="form_label" for="company_name">Total Weight In Gram</label>
-                            <input type="text" class="form-control form-control-sm" name="price1" id="productWeight"
+                            <input type="text" value="0" class="form-control form-control-sm" name="price1" id="productWeight"
                                 onkeyup="calKgRate()" />
                         </productWeight>
                     </th>
@@ -405,136 +392,9 @@ include('connect.php');?>
             <center>
                 <h4>View Order</h4>
             </center>
-            <table id="example" class="cell-border mb-5" style="width:100%">
-                <thead>
-                    <tr>
-                        <th colspan="2"></th>
-                        <th colspan="2">Perticuler </th>
-                        <th>Rate</th>
-                        <th>Quantity</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody class="order-data">
-                    <item>
-                        <tr>
-                            <th rowspan="4">1.</th>
-                            <th>Service</th>
-                            <th colspan="5">Wash & Iron (KG Wise)</th>
-                        </tr>
-                        <tr>
-                            <th>Product</th>
-                            <td colspan="2">Shirt</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <th rowspan="2">Addons</th>
-                            <td colspan="2">Softner</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">Softner</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>100</td>
-                        </tr>
-                    </item>
-                    <item>
-                        <tr>
-                            <th rowspan="4">2.</th>
-                            <th>Service</th>
-                            <th colspan="5">Wash & Iron (Unit Wise)</th>
-                        </tr>
-                        <tr>
-                            <th>Product</th>
-                            <td colspan="2">Pant</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <th rowspan="2">Addons</th>
-                            <td colspan="2">Softner</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">Softner</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>100</td>
-                        </tr>
-                    </item>
-                    
+            <div id="billTable">
 
-                    <totalBill>
-                        <tr>
-                            <th colspan="5" rowspan="5"></th>
-                            <th>Basic Amount</th>
-                            <th>700</th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <h6>Discount
-                                    <input type="number" style="width: 45px;">
-                                    %
-                                </h6>
-                            </th>
-                            <th>-63</th>
-                        </tr>
-                        <tr>
-                            <th>CGST 9%</th>
-                            <th>51.6</th>
-                        </tr>
-                        <tr>
-                            <th>SGST 9%</th>
-                            <th>51.6</th>
-                        </tr>
-                    </totalBill>
-
-                </tbody>
-                <thead>
-
-                    <tr>
-                        <th colspan="5"></th>
-                        <th>Total</th>
-                        <th>700</th>
-                    </tr>
-                </thead>
-
-                <tbody class="mt-5">
-                    <tr style="background-color: #FDF3F3;">
-                        <th colspan="7">
-                            <div class="m-3 col-3">
-                                <label class="form_label" for="company_name">Payment Type</label>
-                                <select class="form-controls form-control-sm" required name="ptype" id="ptype">
-                                    <option value="">Select Type</option>
-                                    <option>Now</option>
-                                    <option>On Delivery</option>
-                                </select>
-                            </div>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th colspan="2">
-                            <div class="col-md-12">
-                                <button type="submit" onclick="addOrder()"
-                                    class="btn btn-sm btn-success col-md-12">Submit</button>
-                            </div>
-                        </th>
-                        <th colspan="2">
-                            <div class="col-md-12">
-                                <button type="submit" class="btn btn-sm btn-danger col-md-12">Cancel</button>
-                            </div>
-                        </th>
-                    </tr>
-                </tbody>
-            </table>
+            </div>
         </div>
 </main>
 
@@ -634,6 +494,7 @@ function getdata() {
 
 <script>
 $(document).ready(function() {
+    $('#billTable').load('ajaxrequest/billData.php');
     $('#example').DataTable({
         "ordering": false
     });
@@ -749,6 +610,15 @@ function addItem()
 {
     var orderId = $('#orderId').val();
 
+    // get all items
+    var orderUnit = $('#orderUnit').val();
+    var pid = $('#product').val();
+    var productQuantity = $('#productQuantity').val();
+    var productWeight = $('#productWeight').val();
+    var productRate = $('#productRate').val();
+    var productAmount = $('#productAmount').val();
+    var remark = $('#remark').val();
+
     // get all addons
     var vals = [];
     let i = 0;
@@ -757,26 +627,75 @@ function addItem()
         let addonRate = $(item).parent().parent().find('.addonPrice').val();
         let addonQty = $(item).parent().parent().find('.addonQty').val();
         let addonTot = $(item).parent().parent().find('.addonTot').val();
+        vals[i].push(pid);
         vals[i].push(item.value);
         vals[i].push(addonRate);
         vals[i].push(addonQty);
         vals[i].push(addonTot);
         i++;
     });
-    console.log(vals);
-    alert(vals);
+
+   let log = $.ajax({
+        url: 'ajaxrequest/addOrderItem.php',
+        type: "POST",
+        data: {
+            orderUnit : orderUnit,
+            pid : pid,
+            productQuantity : productQuantity,
+            productWeight : productWeight,
+            productRate : productRate,
+            productAmount : productAmount,
+            remark : remark,
+            addons : vals
+        },
+        success: function(data) {
+                alert(data);
+                $('#product').val('');
+                $('#productQuantity').val('');
+                $('#productWeight').val('');
+                $('#productRate').val('');
+                $('#productAmount').val('');
+                $('#remark').val('');
+                $('#billTable').load('ajaxrequest/billData.php');
+        }
+    });
+    console.log(log);
 }
 
+// add order codding 
 function addOrder() {
     var orderId = $('#orderId').val();
     var customerId = $('#customer').val();
     var pickupDate = $('#pickupDate').val();
     var delivaryType = $('#delivaryType').val();
+    var grossTotal = $('#grossTotal').val();
+    var discount = $('#discount').html(); 
+    var disPer = $('#disPer').val();
+    var discount = $('#discount').html(); 
+    var gstAmount = $('#cgst').html();
+    var billAmount = $('#billAmt').html();
+    var paymentType = $('#paymentType').val();
 
-    //    order tabel information
-    var orderUnit = $('#orderUnit').val();
-    var service = $('#service').val();
-    alert(delivaryType);
+    let log = $.ajax({
+        url: 'ajaxrequest/addCounterBilll.php',
+        type: "POST",
+        data: {
+            orderId : orderId,
+            customerId : customerId,
+            pickupDate : pickupDate,
+            delivaryType : delivaryType,
+            grossTotal : grossTotal,
+            disPer : disPer,
+            discount : discount,
+            gstAmount : gstAmount,
+            billAmount : billAmount,
+            paymentType : paymentType
+        },
+        success: function(data) {
+                alert(data);
+                $('#billTable').load('ajaxrequest/billData.php');
+        }
+    });
 }
 
 
@@ -826,7 +745,7 @@ function submitdata() {
 
 
 
-<!-- add order codding -->
+
 
 <script>
 function clearInput() {
