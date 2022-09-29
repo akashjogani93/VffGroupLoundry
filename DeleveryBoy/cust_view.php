@@ -22,7 +22,7 @@ $update='true'; $ser=""; $item=""; $rate="";
 <!-- sidebar-wrapper  -->
 <main class="page-content">
     <div class="container">
-        <div class="table-responsive" style="overflow-y:scroll; height: 580px; width:80% margin-left: 100px;">
+        <div class="table-responsive" style="overflow-y:scroll; height: 380px; width:80% margin-left: 100px;">
             <table id="example" class="cell-border" style="width:100%">
             <thead>
                 <tr>
@@ -47,6 +47,7 @@ $update='true'; $ser=""; $item=""; $rate="";
                         <td><?php echo $row['adds'] ?></td>
                     <!--  <td><button class="btn btn-sm btn-danger editbutton" type="button">Update</button></td>  -->
                     <td class="text-center">
+                            <a href="add_cust.php?edit1=<?php echo $row['cid']?>"><button class="btn btn-sm btn-primary">view</button> </a>
                             <a href="add_cust.php?edit=<?php echo $row['cid']?>"><button class="btn btn-sm btn-primary">Edit</button> </a>
                             <a onclick="del(<?php echo $row['cid']; ?>)"><button class="btn btn-sm btn-danger deletebutton" type="button">Delete</button></a></td> 
                     </tr>

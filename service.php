@@ -6,14 +6,6 @@ $update='true'; $dis=""; $title=""; $kg="";
 
 <link href="assets/css/foms.css" rel="stylesheet">
 
-<div class="page-content container-fluid">
-    <div class="footer">
-        <div class="d-flex justify-content-center">
-             <h2 class="" style=" font-weight: 600">Service</h2>
-        </div>
-        <hr style="margin: 0px;">
-    </div>
-</div>
                 <?php
                     $sid = 0;
                     $sql = "SELECT max(sid) FROM services";
@@ -48,6 +40,35 @@ $update='true'; $dis=""; $title=""; $kg="";
                     }
                 ?>
 
+<?php
+    if($update=='true')
+    {
+        ?>
+
+        <div class="page-content container-fluid">
+            <div class="footer">
+                <div class="d-flex justify-content-center">
+                    <h2 class="" style=" font-weight: 600">Service</h2>
+                </div>
+                <hr style="margin: 0px;">
+            </div>
+        </div>
+        <?php
+    }
+    else
+    {
+        ?>
+            <div class="page-content container-fluid">
+            <div class="footer">
+                <div class="d-flex justify-content-center">
+                    <h2 class="" style=" font-weight: 600">Edit & Update Service</h2>
+                </div>
+                <hr style="margin: 0px;">
+            </div>
+        </div>
+        <?php
+    }
+?>
 
 <!-- sidebar-wrapper  -->
 <main class="page-content">

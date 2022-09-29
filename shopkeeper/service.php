@@ -119,7 +119,7 @@ $update='true'; $dis=""; $title=""; $kg="";
                         <td><?php echo $row['sid'] ?></td>
                         <td><?php echo $row['title'] ?></td>
                         <td><?php echo $row['dis'] ?></td>
-                        <td><?php echo $row['price'] ?></td>
+                        <td><?php echo $row['kgRate'] ?></td>
                     <!--  <td><button class="btn btn-sm btn-danger editbutton" type="button">Update</button></td>  -->
                     </tr>
                     <?php

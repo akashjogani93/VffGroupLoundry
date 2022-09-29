@@ -14,7 +14,7 @@ if(isset($_POST['postSubmit']))
     $confirm = mysqli_query($conn,$query) or die(mysqli_error());
     if($confirm)
     {
-        //echo "<script>alert('Service Added Successfully');</script>";
+        echo "<script>alert('Item Price Added successfully');</script>";
         echo '<script> window.location="pricing.php"; </script>';
 
     }
@@ -34,7 +34,7 @@ if(isset($_POST['postUpdate']))
     $ser=$_POST['service'];
     $item=$_POST['item'];
     $rate=$_POST['rate'];
-    $query="UPDATE `product` SET `pid`='$id',`services`='$ser',`productName`='$item',`unitRate`='$rate' WHERE `pid`='$id'";
+    $query="UPDATE `products` SET `pid`='$id',`services`='$ser',`productName`='$item',`unitRate`='$rate' WHERE `pid`='$id'";
     $confirm = mysqli_query($conn,$query) or die(mysqli_error());
     if($confirm)
     {
@@ -58,7 +58,7 @@ if(isset($_POST['postUpdate']))
 // DELETE
 if(isset($_GET['del'])){
     $id = $_GET['del'];
-    $sql1 = "DELETE FROM `product` WHERE `pid`='$id'";
+    $sql1 = "DELETE FROM `products` WHERE `pid`='$id'";
 
     if (!mysqli_query($conn, $sql1)) {
         die('Error: ' . mysqli_error($conn ));

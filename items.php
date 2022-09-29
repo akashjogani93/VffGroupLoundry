@@ -18,8 +18,8 @@ $update='true'; $unit=''; $kg=''; $iname=''; $title=''; $cate='';
 
 <div class="page-content container-fluid">
     <div class="footer">
-        <div class="d-flex justify-content-between">
-             <h2 class="" style=" font-weight: 600">Item Master</h2>
+        <div class="d-flex justify-content-center">
+             <h2 class="" style=" font-weight: 600">Product Master</h2>
         </div>
         <hr style="margin: 0px;">
     </div>
@@ -48,8 +48,8 @@ $update='true'; $unit=''; $kg=''; $iname=''; $title=''; $cate='';
                         {
                             $id=$row['id'];
                             $iname=$row['iname'];
-                            $unit=$row['p_unit'];
-                            $title=$row['service'];
+                            //$unit=$row['p_unit'];
+                            //$title=$row['service'];
                             //$cate=$row['cate'];
                             //$kg=$row['pkg'];
                             $update="false";
@@ -103,7 +103,7 @@ $update='true'; $unit=''; $kg=''; $iname=''; $title=''; $cate='';
                 <thead>
                     <tr class="text-center">
                         <th>Id</th>
-                        <th>Item Name</th>
+                        <th>Product Name</th>
                         <th>Action</th>
                     </tr>
                 </thead>

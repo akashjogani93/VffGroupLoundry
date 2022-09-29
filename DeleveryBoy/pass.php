@@ -1,8 +1,8 @@
 <?php include("sidebar.php"); 
     $type=$_SESSION["type"];
     $id=$_SESSION["id"];
-    echo $id;
-    echo $type;
+    //echo $id;
+    //echo $type;
 ?>
 <div class="page-content container-fluid">
     <div class="footer">
@@ -99,7 +99,7 @@ if(isset($_POST['New_pass']))
         //echo "<script>alert(".$ps.");</script>";
 		if($ps==$password)
 		{
-            echo "<script>alert(".$id.");</script>";
+            //echo "<script>alert(".$id.");</script>";
 			$query="UPDATE `login` SET `password`='$confirm_pass' WHERE `user`='$type' AND `id`='$id'";
 			$confirm=mysqli_query($conn,$query) or die(mysqli_error());
 			if($confirm)

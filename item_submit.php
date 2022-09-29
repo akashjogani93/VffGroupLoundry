@@ -42,19 +42,15 @@ if(isset($_POST['postSubmit']))
 if(isset($_POST['postUpdate']))
 {
     $id=$_POST['id'];
-    $ser=$_POST['service'];
+    //$ser=$_POST['service'];
     //$cate=$_POST['cate'];
     $item=$_POST['item'];
-    $unit=$_POST['unit'];
+    //$unit=$_POST['unit'];
     //$kg=$_POST['kg'];
     //$image = $_FILES['img'];
     //echo $img = upload_Profile($image,"assets/image/");
-    $query="SELECT `sid` FROM `services` WHERE `title`='$ser' ";
-    $confirm=mysqli_query($conn,$query);
-    while($row=mysqli_fetch_array($confirm))
-    {
-        $sid=$row['sid'];
-        $query="UPDATE `item` SET `id`='$id',`sid`='$sid',`iname`='$item',`p_unit`='$unit' WHERE `id`='$id'";
+        //$sid=$row['sid'];
+        $query="UPDATE `item` SET `id`='$id',`iname`='$item' WHERE `id`='$id'";
         $confirm = mysqli_query($conn,$query) or die(mysqli_error());
         if($confirm)
         {
@@ -67,7 +63,7 @@ if(isset($_POST['postUpdate']))
             </script>";         
             echo '<script> window.location= "items.php"; </script>';
         }
-    }      
+          
 }
 
 

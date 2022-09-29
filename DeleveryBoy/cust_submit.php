@@ -6,9 +6,6 @@ include("../connect.php");
 if(isset($_POST['addcust']))
 {
     $id=$_POST['id'];
-    $fname=$_POST['fname'];
-    $mname=$_POST['mname'];
-    $lname=$_POST['lname'];
     $email=$_POST['email'];
     $mobile=$_POST['mobile'];
     $hno=$_POST['hno'];
@@ -17,8 +14,10 @@ if(isset($_POST['addcust']))
     $land=$_POST['land'];
     $state=$_POST['state'];
     $zip=$_POST['zip'];
-    $full=$fname." ".$mname." ".$lname;
-    $query="INSERT INTO `customer`(`cid`,`fname`,`mname`,`lname`,`email`,`mobile`,`hno`,`adds`,`land`,`city`,`state`,`zip`,`full`)VALUES('$id','$fname','$mname','$lname','$email','$mobile','$hno','$adds','$land','$city','$state','$zip','$full');";
+    $gstn=$_POST['gstn'];
+    $adds1=$_POST['adds1'];
+    $full=$_POST['full'];
+    $query="INSERT INTO `customer`(`cid`,`email`,`mobile`,`hno`,`adds`,`land`,`city`,`state`,`zip`,`full`,`gstn`,`adds1`)VALUES('$id','$email','$mobile','$hno','$adds','$land','$city','$state','$zip','$full','$gstn','$adds1');";
     $confirm = mysqli_query($conn,$query) or die(mysqli_error());
     if($confirm)
     {
@@ -39,9 +38,7 @@ if(isset($_POST['addcust']))
 if(isset($_POST['postUpdate']))
 {
     $id=$_POST['id'];
-    $fname=$_POST['fname'];
-    $mname=$_POST['mname'];
-    $lname=$_POST['lname'];
+    $full=$_POST['full'];
     $email=$_POST['email'];
     $mobile=$_POST['mobile'];
     $hno=$_POST['hno'];
@@ -49,9 +46,11 @@ if(isset($_POST['postUpdate']))
     $city=$_POST['city'];
     $land=$_POST['land'];
     $state=$_POST['state'];
+    $adds1=$_POST['adds1'];
+    $gstn=$_POST['gstn'];
     $zip=$_POST['zip'];
-    $full=$fname." ".$mname." ".$lname;
-    $query="UPDATE `customer` SET `cid`='$id',`fname`='$fname',`mname`='$mname',`lname`='$lname',`email`='$email',`mobile`='$mobile',`hno`='$hno',`adds`='$adds',`city`='$city',`state`='$state',`zip`='$zip',`full`='$full' WHERE `cid`='$id'";
+   
+    $query="UPDATE `customer` SET `cid`='$id',`email`='$email',`mobile`='$mobile',`hno`='$hno',`adds`='$adds',`city`='$city',`state`='$state',`zip`='$zip',`full`='$full',`gstn`='$gstn',`adds1`='$adds1' WHERE `cid`='$id'";
     $confirm = mysqli_query($conn,$query) or die(mysqli_error());
     if($confirm)
     {
@@ -81,7 +80,7 @@ if(isset($_GET['del'])){
         die('Error: ' . mysqli_error($conn ));
     }
     //echo '<script>alert("Record Deleted");</script>';
-    echo '<script>location="branch.php";</script>';
+    echo '<script>location="cust_view.php";</script>';
 }
 
 ?>

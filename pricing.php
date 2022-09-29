@@ -20,7 +20,7 @@ $update='true'; $ser=""; $item=""; $rate="";
 
                 <?php
                     $id = 0;
-                    $sql = "SELECT max(pid) FROM pricing";
+                    $sql = "SELECT max(pid) FROM products";
                     $retval = mysqli_query($conn, $sql );
 
                     if(! $retval ) {
@@ -36,14 +36,14 @@ $update='true'; $ser=""; $item=""; $rate="";
                     if(isset($_GET['edit']))
                     { 
                         $id=$_GET['edit'];
-                        $qry="SELECT * FROM `pricing` WHERE `pid`='$id'";
+                        $qry="SELECT * FROM `products` WHERE `pid`='$id'";
                         $exc=mysqli_query($conn,$qry);
                         while($row=mysqli_fetch_array($exc))
                         {
                             $id=$row['pid'];
                             $ser=$row['services'];
-                            $item =$row['items'];
-                            $rate =$row['price'];
+                            $item =$row['productName'];
+                            $rate =$row['unitRate'];
                             $update="false";
 
                             
@@ -154,10 +154,34 @@ $update='true'; $ser=""; $item=""; $rate="";
                     ?>   
                 </div>
             </div>
-        </form>
+        </form></br>
+            <form action="" method="post" enctype="multipart/form-data">
+                <div class="row mt-2">
+                    <div class="group-form col-md-3">
+                        <label class="form_label" for="company_name">Select Services</label>
+                        <select class="form-controls form-control-sm" required name="ser" id="ser">
+                                <option value="">Select Services</option> 
+                                    <?php
+                                        $query="SELECT DISTINCT `title` FROM `services` ORDER BY `sid` ASC";
+                                        $confirm=mysqli_query($conn,$query) or die(mysqli_error());
+                                        while($loca=mysqli_fetch_array($confirm))
+                                    {?>
+                                        <option><?php echo $loca['title']; ?></option>
+                                    <?php   
+                                    }   
+                                ?>   
+                        </select>
+                    </div>
+                    <div class="group-form col-md-2">
+                        <label class="form_label"></label>
+                        <button type="submit" name="search" class="btn btn-sm btn-success col-md-12">search</button>
+                    </div>
+                </div>
+            </form>
         <hr />
         </div>
         <div class="table-responsive" style="overflow-y:scroll; height: 380px; width:80% margin-left: 100px;">
+            
             <table id="example" class="cell-border" style="width:100%">
             <thead>
                 <tr>
@@ -169,24 +193,47 @@ $update='true'; $ser=""; $item=""; $rate="";
                 </tr>
             </thead>
             <tbody>
-                <?php 
-                    $qry="select * from pricing";
-                    $exc=mysqli_query($conn,$qry);
-                    while($row=mysqli_fetch_array($exc)){
-            
-                    ?>
-                    <tr class="text-center">
-                        <td><?php echo $row['pid'] ?></td>
-                        <td><?php echo $row['services'] ?></td>
-                        <td><?php echo $row['items'] ?></td>
-                        <td><?php echo $row['price'] ?></td>
-                    <!--  <td><button class="btn btn-sm btn-danger editbutton" type="button">Update</button></td>  -->
-                    <td class="text-center">
-                            <a href="pricing.php?edit=<?php echo $row['pid']?>"><button class="btn btn-sm btn-primary">Edit</button> </a>
-                            <a onclick="del(<?php echo $row['pid']; ?>)"><button class="btn btn-sm btn-danger deletebutton" type="button">Delete</button></a></td> 
-                    </tr>
-                    <?php
-                    }
+                <?php
+                    if(!isset($_POST['search'])){
+                        $qry="select * from products";
+                        $exc=mysqli_query($conn,$qry);
+                        while($row=mysqli_fetch_array($exc))
+                        {
+                        ?>
+                            <tr class="text-center">
+                                <td><?php echo $row['pid'] ?></td>
+                                <td><?php echo $row['services'] ?></td>
+                                <td><?php echo $row['productName'] ?></td>
+                                <td><?php echo $row['unitRate'] ?></td>
+                            <!--  <td><button class="btn btn-sm btn-danger editbutton" type="button">Update</button></td>  -->
+                            <td class="text-center">
+                                    <a href="pricing.php?edit=<?php echo $row['pid']?>"><button class="btn btn-sm btn-primary">Edit</button> </a>
+                                    <a onclick="del(<?php echo $row['pid']; ?>)"><button class="btn btn-sm btn-danger deletebutton" type="button">Delete</button></a></td> 
+                            </tr>
+                        <?php 
+                        }
+                    }else
+                        {
+                            $name=$_POST['ser'];
+                            $qry="SELECT * FROM `products` WHERE `services`='$name'";
+                            $exc=mysqli_query($conn,$qry);
+                            while($row=mysqli_fetch_array($exc))
+                            {
+                                ?>
+                                <tr class="text-center">
+                                    <td><?php echo $row['pid'] ?></td>
+                                    <td><?php echo $row['services'] ?></td>
+                                    <td><?php echo $row['productName'] ?></td>
+                                    <td><?php echo $row['unitRate'] ?></td>
+                                <!--  <td><button class="btn btn-sm btn-danger editbutton" type="button">Update</button></td>  -->
+                                <td class="text-center">
+                                        <a href="pricing.php?edit=<?php echo $row['pid']?>"><button class="btn btn-sm btn-primary">Edit</button> </a>
+                                        <a onclick="del(<?php echo $row['pid']; ?>)"><button class="btn btn-sm btn-danger deletebutton" type="button">Delete</button></a></td> 
+                                </tr>
+                            <?php 
+                            }
+                        }
+                    
                 ?>
             </tbody>
             </table>

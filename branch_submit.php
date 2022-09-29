@@ -48,7 +48,7 @@ if(isset($_POST['postUpdate']))
     if($confirm)
     {
         echo "<script>alert('Branch Updated Successfully');</script>";
-        echo '<script> window.location= "add_branch.php"; </script>';
+        echo '<script> window.location= "branch.php"; </script>';
 
     }
     else{

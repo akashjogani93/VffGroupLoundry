@@ -9,7 +9,7 @@ if (isset($_POST['submit']))
     $mname = $_POST['mname'];
     $lname = $_POST['lname'];
     $gen = $_POST['gen'];
-    
+    $date = $_POST['date'];
     $adds = $_POST['adds'];
     $city = $_POST['city'];
     $state = $_POST['state'];
@@ -35,7 +35,7 @@ if (isset($_POST['submit']))
 
     if($des=='Other Staff')
     {
-        $query="INSERT INTO `staff`(`id`, `fname`, `mname`, `lname`, `gen`,`adds`, `city`, `state`, `pin`, `mobile`,`email`, `branch`, `des`,`upl`,`upl1`,`upl2`,'full') VALUES ('$id','$fname','$mname','$lname','$gen','$adds','$city','$state','$pin','$mobile','$email','$branch','$des','$profile','$doc','$doc1','$full')";
+        $query="INSERT INTO `staff`(`id`, `fname`, `mname`, `lname`, `gen`,`adds`, `city`, `state`, `pin`, `mobile`,`email`, `branch`, `des`,`upl`,`upl1`,`upl2`,'full',`date`) VALUES ('$id','$fname','$mname','$lname','$gen','$adds','$city','$state','$pin','$mobile','$email','$branch','$des','$profile','$doc','$doc1','$full','$date')";
         $confirm = mysqli_query($conn,$query);
         if($confirm)
         {
@@ -51,7 +51,7 @@ if (isset($_POST['submit']))
     }
     else
     {
-        $query="INSERT INTO `staff`(`id`, `fname`, `mname`, `lname`, `gen`,`adds`, `city`, `state`, `pin`, `mobile`,`email`, `branch`, `des`,`upl`,`upl1`,`upl2`,`full`) VALUES ('$id','$fname','$mname','$lname','$gen','$adds','$city','$state','$pin','$mobile','$email','$branch','$des','$profile','$doc','$doc1','$full')";
+        $query="INSERT INTO `staff`(`id`, `fname`, `mname`, `lname`, `gen`,`adds`, `city`, `state`, `pin`, `mobile`,`email`, `branch`, `des`,`upl`,`upl1`,`upl2`,`full`,`date`) VALUES ('$id','$fname','$mname','$lname','$gen','$adds','$city','$state','$pin','$mobile','$email','$branch','$des','$profile','$doc','$doc1','$full','$date')";
            $confirm = mysqli_query($conn,$query);
            if($confirm)
            {
@@ -119,9 +119,6 @@ if (isset($_POST['update']))
         echo "<script>alert('staff Detail updated');</script>";
         echo "<script>location='view_employee.php';</script>";
     }
-}else
-{
-    echo "<script>alert('staff not Updated');</script>";
 }
 
 

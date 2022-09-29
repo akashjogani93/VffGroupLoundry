@@ -1,14 +1,6 @@
-<?php include("sidebar.php"); include("connect.php"); $update='true'; $full=""; $mname="";
-$email=""; $mobile=""; $hno=""; $lname=""; $adds=""; $land=""; $city=""; $state=""; $zip=""; $gstn=""; $adds1=""; ?>
+<?php include("sidebar.php"); include("connect.php"); $update='true'; $full=""; 
+$email=""; $mobile=""; $hno="";  $adds=""; $land=""; $city=""; $state=""; $zip=""; $gstn=""; $adds1=""; ?>
 
-<div class="page-content container-fluid">
-    <div class="footer">
-        <div class="d-flex justify-content-center">
-             <h2 class="" style=" font-weight: 600">Customer Registration</h2>
-        </div>
-        <hr style="margin: 0px;">
-    </div>
-</div>
                 <?php
                     $id = 0; 
                     $sql = "SELECT max(cid) FROM customer";
@@ -33,8 +25,6 @@ $email=""; $mobile=""; $hno=""; $lname=""; $adds=""; $land=""; $city=""; $state=
                         {
                             $id=$row['cid'];
                             $full=$row['full'];
-                            $mname =$row['mname'];
-                            $lname =$row['lname'];
                             $email =$row['email'];
                             $mobile =$row['mobile'];
                             $hno =$row['hno'];
@@ -62,8 +52,6 @@ $email=""; $mobile=""; $hno=""; $lname=""; $adds=""; $land=""; $city=""; $state=
                         {
                             $id=$row['cid'];
                             $full=$row['full'];
-                            $mname =$row['mname'];
-                            $lname =$row['lname'];
                             $email =$row['email'];
                             $mobile =$row['mobile'];
                             $hno =$row['hno'];
@@ -81,6 +69,45 @@ $email=""; $mobile=""; $hno=""; $lname=""; $adds=""; $land=""; $city=""; $state=
 
                     }
                 ?>
+
+
+<div class="page-content container-fluid">
+    <div class="footer">
+        <?php if($update=="view")
+        {
+            
+            ?>
+                <div class="d-flex justify-content-center">
+                    <h2 class="" style=" font-weight: 600">View Customer Details</h2>
+                </div>
+            <?php
+        }
+        else
+        {
+            if($update=="true")
+            {
+                ?>
+                        <div class="d-flex justify-content-center">
+                            <h2 class="" style=" font-weight: 600">Customer Registration</h2>
+                        </div>
+                <?php
+            }else
+            {
+                ?>
+                        <div class="d-flex justify-content-center">
+                            <h2 class="" style=" font-weight: 600">Edit Customer Details</h2>
+                        </div>
+                <?php
+            }
+        }
+        ?>
+        <hr style="margin: 0px;">
+    </div>
+</div>
+
+
+
+
 <main class="page-content">
     <div class="container">
         <form action="cust_submit.php" method="post" enctype="multipart/form-data">
@@ -184,3 +211,5 @@ $email=""; $mobile=""; $hno=""; $lname=""; $adds=""; $land=""; $city=""; $state=
         </form>
     </div>
 </main>
+
+<?php include("footer.php"); ?>

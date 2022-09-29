@@ -24,7 +24,7 @@
     <style type="text/css">
     body {
         /* background-image: linear-gradient(to bottom , #248ea9 40%, #fafdcb 40%); Standard syntax (must be last) */
-        background-image: url("assets/image/laundry-services-attr-anti-bacterial-laundry-service-lau6-1.jpg");
+        background-image: url("assets/image/105267335-wicker-basket-with-clothes-on-ironing-board-at-dry-cleaner-s.webp");
         /* background-color: #946000; */
         background-attachment: fixed;
         background-repeat: no-repeat;

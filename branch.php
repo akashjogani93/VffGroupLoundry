@@ -3,15 +3,6 @@ include("connect.php");
  $update="true"; $bid=""; $bname=""; $pin=""; $adds=""; $gst=""; $mob=""; $email="";
 ?>
 
-
-<div class="page-content container-fluid">
-    <div class="footer">
-        <div class="d-flex justify-content-center">
-            <h2 class="" style=" font-weight: 600">Branch</h2>
-        </div>
-        <hr style="margin: 0px;">      
-    </div>
-</div>
                 <?php
                     $bid = 0;
                     $sql = "SELECT max(bid) FROM branch";
@@ -50,6 +41,36 @@ include("connect.php");
 
                     }
                 ?>
+
+<?php
+    if($update=='true') 
+    { ?>
+        <div class="page-content container-fluid">
+            <div class="footer">
+                <div class="d-flex justify-content-center">
+                    <h2 class="" style=" font-weight: 600">Branch Registration</h2>
+                </div>
+                <hr style="margin: 0px;">      
+            </div>
+        </div>
+    <?php
+    }
+    else
+    {
+        ?>
+            <div class="page-content container-fluid">
+            <div class="footer">
+                <div class="d-flex justify-content-center">
+                    <h2 class="" style=" font-weight: 600">Edit And Update Branch</h2>
+                </div>
+                <hr style="margin: 0px;">      
+            </div>
+            </div>
+        <?php
+    }
+    ?>
+
+
 <!-- sidebar-wrapper  -->
 <main class="page-content">
     <div class="container">
@@ -115,7 +136,7 @@ include("connect.php");
         <hr />
         </div>
         
-            <div class="table-responsive" style="overflow-y:scroll; height: 380px; width:80% margin-left: 100px;">
+            <div class="table-responsive" style="overflow-y:scroll; height: 360px; width:80% margin-left: 100px;">
             <table id="example" class="cell-border" style="width:100%">
                 <thead>
                     <tr>
