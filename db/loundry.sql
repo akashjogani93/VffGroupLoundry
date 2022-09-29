@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 29, 2022 at 02:34 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Sep 30, 2022 at 01:02 AM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 8.0.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `laundry6`
+-- Database: `loundry`
 --
 
 -- --------------------------------------------------------
@@ -64,8 +64,65 @@ CREATE TABLE `branch` (
 --
 
 INSERT INTO `branch` (`bid`, `bname`, `adds`, `pin`, `gst`, `mobile`, `email`) VALUES
-(1, 'Belgaum new', 'Plot no 198 saraf colony khanapur road tilakawadi', '5911221', '29BRGPS5251K127', '9742020863', 'akashjogani@gmail.com'),
+(1, 'Belgaum new', 'Plot no 198 saraf colony khanapur road tilakawadi', '5911221', '29BRGPS5251K127', '9742020863', 'akashjogani93@gmail.com'),
 (2, 'Belgaum Tilakwadi', 'Plot no 198 saraf colony khanapur road tilakawadi', '590001', '29BRGPS5251K127', '9742020863', 'akashjogani93@gmail');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `counteraddon`
+--
+
+CREATE TABLE `counteraddon` (
+  `caId` int(50) NOT NULL,
+  `coId` int(50) NOT NULL,
+  `tpid` int(50) NOT NULL,
+  `pid` int(50) NOT NULL,
+  `addon` varchar(30) NOT NULL,
+  `rate` double NOT NULL,
+  `qty` double NOT NULL,
+  `total` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `counteraddon`
+--
+
+INSERT INTO `counteraddon` (`caId`, `coId`, `tpid`, `pid`, `addon`, `rate`, `qty`, `total`) VALUES
+(1, 1, 1, 1, 'Softner', 5, 10, 50),
+(2, 1, 1, 1, 'Stain Removal', 20, 5, 100),
+(3, 1, 2, 1, 'Stain Removal', 20, 5, 100),
+(4, 1, 2, 1, 'Softner', 5, 10, 50),
+(5, 1, 3, 3, 'Starch', 20, 5, 100),
+(6, 2, 4, 1, 'Softner', 5, 5, 25);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `counterproduct`
+--
+
+CREATE TABLE `counterproduct` (
+  `tpid` int(50) NOT NULL,
+  `coId` int(50) NOT NULL,
+  `unit` varchar(100) NOT NULL,
+  `pid` int(50) NOT NULL,
+  `pqty` int(50) NOT NULL,
+  `weight` float NOT NULL,
+  `rate` float NOT NULL,
+  `amount` float NOT NULL,
+  `remark` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `counterproduct`
+--
+
+INSERT INTO `counterproduct` (`tpid`, `coId`, `unit`, `pid`, `pqty`, `weight`, `rate`, `amount`, `remark`) VALUES
+(1, 1, 'unit', 1, 2, 0, 10, 20, 'unit product'),
+(2, 1, 'kg', 1, 10, 1000, 0, 79, 'kg item'),
+(3, 1, 'unit', 3, 5, 0, 30, 150, 'third item'),
+(4, 2, 'unit', 1, 10, 0, 10, 100, 'monu');
 
 -- --------------------------------------------------------
 
@@ -78,12 +135,22 @@ CREATE TABLE `couterorder` (
   `cid` int(10) NOT NULL,
   `pickupDate` varchar(50) NOT NULL,
   `deleveryType` varchar(50) NOT NULL,
+  `grossAmount` double NOT NULL,
+  `discountPer` float NOT NULL,
   `discount` float NOT NULL,
   `gst` double NOT NULL,
   `totAmount` double NOT NULL,
   `paymentType` varchar(50) NOT NULL,
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `couterorder`
+--
+
+INSERT INTO `couterorder` (`coId`, `cid`, `pickupDate`, `deleveryType`, `grossAmount`, `discountPer`, `discount`, `gst`, `totAmount`, `paymentType`, `status`) VALUES
+(1, 1, '2022-09-30', 'By Counter', 649, 0, 0, 116.82, 765.82, 'Now', 1),
+(2, 2, '2022-09-30', 'By Counter', 125, 2, 2.5, 22.06, 144.55, 'On Delivery', 0);
 
 -- --------------------------------------------------------
 
@@ -93,6 +160,9 @@ CREATE TABLE `couterorder` (
 
 CREATE TABLE `customer` (
   `cid` int(10) NOT NULL,
+  `fname` varchar(20) NOT NULL,
+  `mname` varchar(20) NOT NULL,
+  `lname` varchar(20) NOT NULL,
   `email` varchar(30) NOT NULL,
   `mobile` varchar(12) NOT NULL,
   `hno` varchar(10) NOT NULL,
@@ -101,18 +171,16 @@ CREATE TABLE `customer` (
   `city` varchar(20) NOT NULL,
   `state` varchar(20) NOT NULL,
   `zip` varchar(10) NOT NULL,
-  `full` varchar(100) NOT NULL,
-  `adds1` varchar(100) NOT NULL,
-  `gstn` varchar(30) NOT NULL
+  `full` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`cid`, `email`, `mobile`, `hno`, `adds`, `land`, `city`, `state`, `zip`, `full`, `adds1`, `gstn`) VALUES
-(2, 'admin@admin.com', '7676801529', '73/4', 'sambra', 'kj', 'belgaum', 'karnataka', '597725', 'madan babu yaddi', '', ''),
-(3, 'akashjogani93@gmail.com', '9742020863', '73/4', 'sambra', 'first gate', 'belgaum', 'karnataka', '597725', 'Evon It Solution', 'Arun Empire first Gate', 'FLIP5425558FFF');
+INSERT INTO `customer` (`cid`, `fname`, `mname`, `lname`, `email`, `mobile`, `hno`, `adds`, `land`, `city`, `state`, `zip`, `full`) VALUES
+(1, 'Sagar', 'a', 'shinde', 'akashjogani93@gmail.com', '9742020863', '73/4', 'belgaum', 'kj', 'belgaum', 'karnataka', '597725', 'Sagar a shinde'),
+(2, 'madan', 'babu', 'yaddi', 'admin@admin.com', '7676801529', '73/4', 'sambra', 'kj', 'belgaum', 'karnataka', '597725', 'madan babu yaddi');
 
 -- --------------------------------------------------------
 
@@ -181,9 +249,7 @@ CREATE TABLE `login` (
 
 INSERT INTO `login` (`logid`, `id`, `username`, `password`, `user`) VALUES
 (1, 0, 'admin', 'pass', 'admin'),
-(3, 4, 'vff4', 'vinayak@122', 'Shop Keeper'),
-(4, 5, 'vff5', 'vishal@123', 'Shop Keeper'),
-(5, 6, 'vff6', 'vff98374', 'Delevery Boy');
+(2, 1, 'vff1', 'vff43916', 'Shop Keeper');
 
 -- --------------------------------------------------------
 
@@ -245,8 +311,9 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`pid`, `services`, `productName`, `unitRate`, `status`) VALUES
 (1, 'Wash & Iron', 'Dupatta Designer', 10, 0),
+(2, 'Wash & Fold', 'Dupatta Designer', 20, 0),
 (3, 'Dry Cleaning', 'Dupatta Designer', 30, 0),
-(5, 'Wash & Fold Premium', 'Kameez/Kurta', 40, 0);
+(4, 'Wash & Iron', 'Coat', 10, 0);
 
 -- --------------------------------------------------------
 
@@ -266,10 +333,9 @@ CREATE TABLE `services` (
 --
 
 INSERT INTO `services` (`sid`, `title`, `dis`, `kgRate`) VALUES
+(1, 'Wash & Iron', 'Wash and iron', 79),
 (3, 'Dry Cleaning', 'Cleaning', 450),
-(5, 'Wash & Fold Premium', 'This can be a Premium', 120),
-(6, 'Wash & Fold', 'wash cloaths', 79),
-(7, 'Wash & Iron', 'wash', 100);
+(4, 'Wash & Fold', 'wash & Fold', 49);
 
 -- --------------------------------------------------------
 
@@ -294,18 +360,17 @@ CREATE TABLE `staff` (
   `upl` varchar(60) NOT NULL,
   `upl1` varchar(60) NOT NULL,
   `upl2` varchar(60) NOT NULL,
-  `full` varchar(100) NOT NULL,
-  `date` date NOT NULL
+  `full` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `staff`
 --
 
-INSERT INTO `staff` (`id`, `fname`, `mname`, `lname`, `gen`, `adds`, `city`, `state`, `pin`, `mobile`, `email`, `branch`, `des`, `upl`, `upl1`, `upl2`, `full`, `date`) VALUES
-(4, 'Vinayak', 'Yallappa', 'Dharmoji', 'Male', 'Sambra', 'Belgaum', 'karnataka', '591124', '7676801529', 'vinayakdmg@gmail.com', 'Belgaum new', 'Shop Keeper', 'assets/image/DSC_2300.JPG', '', '', 'Vinayak Yallappa Dharmoji', '2022-09-29'),
-(5, 'vishal', 'a', 'lohar', 'Male', 'belgaum', 'belgaum', 'karnataka', '591124', '9742020863', 'admin@admin.com', 'Belgaum new', 'Shop Keeper', '', '', '', 'vishal a lohar', '2022-09-29'),
-(6, 'Sairaj', 'n', 'patil', 'Male', 'belgaum', 'belgaum', 'karnataka', '591124', '9742020863', 'admin@admin.com', 'Belgaum new', 'Delevery Boy', '', '', '', 'Sairaj n patil', '2022-09-29');
+INSERT INTO `staff` (`id`, `fname`, `mname`, `lname`, `gen`, `adds`, `city`, `state`, `pin`, `mobile`, `email`, `branch`, `des`, `upl`, `upl1`, `upl2`, `full`) VALUES
+(1, 'Akash', 'baleshi', 'jogani', 'Male', 'Sambra', 'belgaum', 'karnataka', '591124', '9742020863', 'akashjogani93@gmail.com', 'Belgaum new', 'Shop Keeper', 'assets/image/1665476.jpg', 'assets/image/Counter order.png', '', 'Akash baleshi jogani'),
+(2, 'Sagar ', 'A', 'shinde', 'Male', 'belgaum', 'belgaum', 'karnataka', '591124', '9742020863', 'admin@admin.com', 'Belgaum new', 'Delevery Boy', 'assets/image/underprocessing view.png', 'assets/image/underprocessing.png', 'assets/image/Counter order.png', 'Sagar A shinde'),
+(3, 'Akash', 'Baleshi', 'Jogani', 'Male', 'Main Road', 'Belgaum', 'karnataka', '591124', '9742020863', 'akashjogani93@gmail.com', 'Belgaum new', 'Other Staff', 'assets/image/1665476.jpg', 'assets/image/1665476.jpg', 'assets/image/1665476.jpg', 'Akash Baleshi Jogani');
 
 -- --------------------------------------------------------
 
@@ -315,6 +380,7 @@ INSERT INTO `staff` (`id`, `fname`, `mname`, `lname`, `gen`, `adds`, `city`, `st
 
 CREATE TABLE `tempaddon` (
   `id` int(10) NOT NULL,
+  `tpid` int(50) NOT NULL,
   `pid` int(50) NOT NULL,
   `addon` varchar(30) NOT NULL,
   `rate` double NOT NULL,
@@ -330,7 +396,6 @@ CREATE TABLE `tempaddon` (
 
 CREATE TABLE `tempproduct` (
   `tpid` int(50) NOT NULL,
-  `coId` int(50) NOT NULL,
   `unit` varchar(100) NOT NULL,
   `pid` int(50) NOT NULL,
   `pqty` int(50) NOT NULL,
@@ -355,6 +420,18 @@ ALTER TABLE `addon`
 --
 ALTER TABLE `branch`
   ADD PRIMARY KEY (`bid`);
+
+--
+-- Indexes for table `counteraddon`
+--
+ALTER TABLE `counteraddon`
+  ADD PRIMARY KEY (`caId`);
+
+--
+-- Indexes for table `counterproduct`
+--
+ALTER TABLE `counterproduct`
+  ADD PRIMARY KEY (`tpid`);
 
 --
 -- Indexes for table `couterorder`
@@ -436,13 +513,25 @@ ALTER TABLE `tempproduct`
 -- AUTO_INCREMENT for table `addon`
 --
 ALTER TABLE `addon`
-  MODIFY `id` bigint(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `counteraddon`
+--
+ALTER TABLE `counteraddon`
+  MODIFY `caId` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `counterproduct`
+--
+ALTER TABLE `counterproduct`
+  MODIFY `tpid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `couterorder`
 --
 ALTER TABLE `couterorder`
-  MODIFY `coId` int(50) NOT NULL AUTO_INCREMENT;
+  MODIFY `coId` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -466,7 +555,7 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `logid` bigint(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `logid` bigint(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `orderdel`
@@ -484,19 +573,19 @@ ALTER TABLE `pricing`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `pid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `pid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `id` bigint(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tempaddon`
 --
 ALTER TABLE `tempaddon`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tempproduct`

@@ -694,6 +694,7 @@ function addOrder() {
         success: function(data) {
                 alert(data);
                 $('#billTable').load('ajaxrequest/billData.php');
+                window.location.href = "new_order.php";
         }
     });
 }
