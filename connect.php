@@ -3,6 +3,6 @@
 $servername="localhost";
 $username="root";
 $password="";
-$db="laundry6";
+$db="loundry";
 $conn=mysqli_connect($servername,$username,$password,$db);
 ?>

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 23, 2022 at 07:11 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Sep 29, 2022 at 05:55 AM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 8.0.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -46,38 +46,6 @@ INSERT INTO `addon` (`id`, `addon`, `rate`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `add_adon`
---
-
-CREATE TABLE `add_adon` (
-  `id` int(10) NOT NULL,
-  `pro_id` int(10) NOT NULL,
-  `addon` varchar(30) NOT NULL,
-  `rate` double NOT NULL,
-  `qty` double NOT NULL,
-  `total` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `add_adon`
---
-
-INSERT INTO `add_adon` (`id`, `pro_id`, `addon`, `rate`, `qty`, `total`) VALUES
-(35, 1, 'Softner', 0, 1, 0),
-(36, 1, 'Softner', 0, 5, 0),
-(37, 1, 'Softner', 0, 5, 0),
-(38, 1, 'Softner', 0, 5, 0),
-(39, 1, 'Softner', 0, 5, 0),
-(40, 3, 'Softner', 0, 0, 0),
-(41, 3, 'Softner', 0, 0, 0),
-(42, 3, 'Starch', 0, 10, 0),
-(43, 5, 'Softner', 0, 1, 0),
-(44, 1, 'Softner', 0, 1, 0),
-(45, 1, 'Softner', 0, 0, 0);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `branch`
 --
 
@@ -98,6 +66,24 @@ CREATE TABLE `branch` (
 INSERT INTO `branch` (`bid`, `bname`, `adds`, `pin`, `gst`, `mobile`, `email`) VALUES
 (1, 'Belgaum new', 'Plot no 198 saraf colony khanapur road tilakawadi', '5911221', '29BRGPS5251K127', '9742020863', 'akashjogani93@gmail.com'),
 (2, 'Belgaum Tilakwadi', 'Plot no 198 saraf colony khanapur road tilakawadi', '590001', '29BRGPS5251K127', '9742020863', 'akashjogani93@gmail');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `couterorder`
+--
+
+CREATE TABLE `couterorder` (
+  `coId` int(50) NOT NULL,
+  `cid` int(10) NOT NULL,
+  `pickupDate` varchar(50) NOT NULL,
+  `deleveryType` varchar(50) NOT NULL,
+  `discount` float NOT NULL,
+  `gst` double NOT NULL,
+  `totAmount` double NOT NULL,
+  `paymentType` varchar(50) NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -127,8 +113,7 @@ CREATE TABLE `customer` (
 
 INSERT INTO `customer` (`cid`, `fname`, `mname`, `lname`, `email`, `mobile`, `hno`, `adds`, `land`, `city`, `state`, `zip`, `full`) VALUES
 (1, 'Sagar', 'a', 'shinde', 'akashjogani93@gmail.com', '9742020863', '73/4', 'belgaum', 'kj', 'belgaum', 'karnataka', '597725', 'Sagar a shinde'),
-(2, 'madan', 'babu', 'yaddi', 'admin@admin.com', '7676801529', '73/4', 'sambra', 'kj', 'belgaum', 'karnataka', '597725', 'madan babu yaddi'),
-(3, 'Akash', 'baleshi', 'jogani', 'admin@admin.com', '9742020863', '73/4', 'belgaum', 'kj', 'belgaum', 'karnataka', '597725', 'Akash baleshi jogani');
+(2, 'madan', 'babu', 'yaddi', 'admin@admin.com', '7676801529', '73/4', 'sambra', 'kj', 'belgaum', 'karnataka', '597725', 'madan babu yaddi');
 
 -- --------------------------------------------------------
 
@@ -196,7 +181,8 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`logid`, `id`, `username`, `password`, `user`) VALUES
-(1, 0, 'admin', 'pass', 'admin');
+(1, 0, 'admin', 'pass', 'admin'),
+(2, 1, 'vff1', 'vff43916', 'Shop Keeper');
 
 -- --------------------------------------------------------
 
@@ -241,6 +227,30 @@ INSERT INTO `pricing` (`pid`, `services`, `items`, `price`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `pid` int(50) NOT NULL,
+  `services` varchar(100) NOT NULL,
+  `productName` varchar(100) NOT NULL,
+  `unitRate` tinyint(1) NOT NULL,
+  `status` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`pid`, `services`, `productName`, `unitRate`, `status`) VALUES
+(1, 'Wash & Iron', 'Dupatta Designer', 10, 0),
+(2, 'Wash & Fold', 'Dupatta Designer', 20, 0),
+(3, 'Dry Cleaning', 'Dupatta Designer', 30, 0),
+(4, 'Wash & Iron', 'Coat', 10, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `services`
 --
 
@@ -248,17 +258,85 @@ CREATE TABLE `services` (
   `sid` bigint(10) NOT NULL,
   `title` varchar(20) NOT NULL,
   `dis` varchar(30) NOT NULL,
-  `price` double NOT NULL
+  `kgRate` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `services`
 --
 
-INSERT INTO `services` (`sid`, `title`, `dis`, `price`) VALUES
+INSERT INTO `services` (`sid`, `title`, `dis`, `kgRate`) VALUES
 (1, 'Wash & Iron', 'Wash and iron', 79),
 (3, 'Dry Cleaning', 'Cleaning', 450),
 (4, 'Wash & Fold', 'wash & Fold', 49);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `staff`
+--
+
+CREATE TABLE `staff` (
+  `id` bigint(10) NOT NULL,
+  `fname` varchar(20) NOT NULL,
+  `mname` varchar(20) NOT NULL,
+  `lname` varchar(20) NOT NULL,
+  `gen` varchar(10) NOT NULL,
+  `adds` varchar(50) NOT NULL,
+  `city` varchar(20) NOT NULL,
+  `state` varchar(20) NOT NULL,
+  `pin` varchar(10) NOT NULL,
+  `mobile` varchar(12) NOT NULL,
+  `email` varchar(30) NOT NULL,
+  `branch` varchar(20) NOT NULL,
+  `des` varchar(20) NOT NULL,
+  `upl` varchar(60) NOT NULL,
+  `upl1` varchar(60) NOT NULL,
+  `upl2` varchar(60) NOT NULL,
+  `full` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `staff`
+--
+
+INSERT INTO `staff` (`id`, `fname`, `mname`, `lname`, `gen`, `adds`, `city`, `state`, `pin`, `mobile`, `email`, `branch`, `des`, `upl`, `upl1`, `upl2`, `full`) VALUES
+(1, 'Akash', 'baleshi', 'jogani', 'Male', 'Sambra', 'belgaum', 'karnataka', '591124', '9742020863', 'akashjogani93@gmail.com', 'Belgaum new', 'Shop Keeper', 'assets/image/1665476.jpg', 'assets/image/Counter order.png', '', 'Akash baleshi jogani'),
+(2, 'Sagar ', 'A', 'shinde', 'Male', 'belgaum', 'belgaum', 'karnataka', '591124', '9742020863', 'admin@admin.com', 'Belgaum new', 'Delevery Boy', 'assets/image/underprocessing view.png', 'assets/image/underprocessing.png', 'assets/image/Counter order.png', 'Sagar A shinde'),
+(3, 'Akash', 'Baleshi', 'Jogani', 'Male', 'Main Road', 'Belgaum', 'karnataka', '591124', '9742020863', 'akashjogani93@gmail.com', 'Belgaum new', 'Other Staff', 'assets/image/1665476.jpg', 'assets/image/1665476.jpg', 'assets/image/1665476.jpg', 'Akash Baleshi Jogani');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tempaddon`
+--
+
+CREATE TABLE `tempaddon` (
+  `id` int(10) NOT NULL,
+  `pid` int(50) NOT NULL,
+  `addon` varchar(30) NOT NULL,
+  `rate` double NOT NULL,
+  `qty` double NOT NULL,
+  `total` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tempproduct`
+--
+
+CREATE TABLE `tempproduct` (
+  `tpid` int(50) NOT NULL,
+  `coId` int(50) NOT NULL,
+  `unit` varchar(100) NOT NULL,
+  `pid` int(50) NOT NULL,
+  `pqty` int(50) NOT NULL,
+  `weight` float NOT NULL,
+  `rate` float NOT NULL,
+  `amount` float NOT NULL,
+  `remark` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
@@ -271,16 +349,16 @@ ALTER TABLE `addon`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `add_adon`
---
-ALTER TABLE `add_adon`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `branch`
 --
 ALTER TABLE `branch`
   ADD PRIMARY KEY (`bid`);
+
+--
+-- Indexes for table `couterorder`
+--
+ALTER TABLE `couterorder`
+  ADD PRIMARY KEY (`coId`);
 
 --
 -- Indexes for table `customer`
@@ -319,10 +397,34 @@ ALTER TABLE `pricing`
   ADD PRIMARY KEY (`pid`);
 
 --
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`pid`);
+
+--
 -- Indexes for table `services`
 --
 ALTER TABLE `services`
   ADD PRIMARY KEY (`sid`);
+
+--
+-- Indexes for table `staff`
+--
+ALTER TABLE `staff`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tempaddon`
+--
+ALTER TABLE `tempaddon`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tempproduct`
+--
+ALTER TABLE `tempproduct`
+  ADD PRIMARY KEY (`tpid`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -335,10 +437,10 @@ ALTER TABLE `addon`
   MODIFY `id` bigint(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `add_adon`
+-- AUTO_INCREMENT for table `couterorder`
 --
-ALTER TABLE `add_adon`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+ALTER TABLE `couterorder`
+  MODIFY `coId` int(50) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -362,19 +464,43 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `logid` bigint(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `logid` bigint(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `orderdel`
 --
 ALTER TABLE `orderdel`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `pricing`
 --
 ALTER TABLE `pricing`
   MODIFY `pid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `pid` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `staff`
+--
+ALTER TABLE `staff`
+  MODIFY `id` bigint(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tempaddon`
+--
+ALTER TABLE `tempaddon`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+
+--
+-- AUTO_INCREMENT for table `tempproduct`
+--
+ALTER TABLE `tempproduct`
+  MODIFY `tpid` int(50) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

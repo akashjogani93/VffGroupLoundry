@@ -46,17 +46,10 @@ include('connect.php');?>
     $(document).ready(function() {
         $('.add_more').click(function(e) {
             e.preventDefault();
-            $('#show').after(`<tr style="background-color: #ebf9f7;">
-                    <th scope="row" style="display: none;">
-                            <div class="group-form col-md-2" >
-                                <label class="form_label" for="company_name">Product Id</label>
-                                <input type="text" class="form-control form-control-sm" readonly
-                                    value="<?php echo $idd; ?>" name="pid[]" id="pid" />
-                            </div>
-                    </th>
+            $('#show').after(`<tr style="background-color: #ebf9f7;" class="addonRow">
                     <td colspan="2">
                     <label class="form_label" for="company_name">Select Addon</label>
-                    <select class="form-controls form-control-sm" required name="addn[]" id="addn" onchange="c_addn1()">
+                    <select class="form-controls form-control-sm addonName" required name="addn[]" id="addn[]" onchange="addAddon(this.id)">>
                         <option value="">Select Addon</option>
                         <?php
                             $query="SELECT DISTINCT `addon` FROM `addon` ORDER BY `id` ASC";
@@ -67,14 +60,14 @@ include('connect.php');?>
                     </select>
                     </td>
                     <td> <label class="form_label" for="company_name">Product Rate</label>
-                    <input type="text" class="form-control form-control-sm" readonly name="price[]" id="price" /></td>
+                    <input type="text" class="form-control form-control-sm addonPrice" readonly name="price[]" id="price" /></td>
                     <td> 
                         <label class="form_label" for="company_name">Add Qty</label>
-                    <input type="text" class="form-control form-control-sm" require name="qtyy[]" id="qtyy" />
+                    <input type="text" class="form-control form-control-sm addonQty" require name="qtyy[]" id="qtyy" />
                     </td>
                     <td>
                     <label class="form_label" for="company_name">Total</label>
-                    <input type="text" class="form-control form-control-sm" readonly name="tot[]" id="tot" />
+                    <input type="text" class="form-control form-control-sm addonTot" readonly name="tot[]" id="tot" />
                     </td>
                     <td>
                     <br/>
@@ -82,11 +75,67 @@ include('connect.php');?>
                     </td>
                 </tr>`);
         });
+
         $(document).on('click', '.remove', function(e) {
-            e.preventDefault();
+              e.preventDefault();
             let row_item = $(this).parent().parent();
             $(row_item).remove();
         });
+
+        $(document).on('change', '.addonName', function(e) {
+            e.preventDefault();
+            //alert($(this).parent().parent().find('input'));
+            let addn = $(this).val();
+            let addonRate = $(this).parent().parent().find('.addonPrice');
+            let addonQty = $(this).parent().parent().find('.addonQty');
+            let addonTot = $(this).parent().parent().find('.addonTot');
+            $.ajax({
+                url: 'ajaxrequest/getAddonRate.php',
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    addn : addn,
+                },
+                success: function(data) {
+                    console.log(data);
+                    $(addonRate).val(data);
+                }
+            });
+        });
+
+        $(document).on('click', '.addonName', function(e) {
+            var product = $('#product').val();
+            var orderUnit = $('#orderUnit').val();
+            if(product == '')
+            {
+                alert("Select Product");
+                exit();
+            }else if(orderUnit == '')
+            {
+                alert("Select orderUnit");
+                exit();
+            }
+        });
+
+        $(document).on('keyup', '.addonQty', function(e) {
+            var product = $('#product').val();
+            var orderUnit = $('#orderUnit').val();
+            if(product == '')
+            {
+                alert("Select Product");
+                exit();
+            }else if(orderUnit == '')
+            {
+                alert("Select orderUnit");
+                exit();
+            }else{
+                let addonQty = $(this).val();
+                let addonRate = $(this).parent().parent().find('.addonPrice').val();
+                let addonTot = $(this).parent().parent().find('.addonTot');
+                $(addonTot).val((addonQty * addonRate).toFixed(0));
+            }
+        });
+
         //ajax insert
         $('#add_form').submit(function(e) {
             e.preventDefault();
@@ -104,29 +153,6 @@ include('connect.php');?>
         });
 
     });
-    </script>
-    <script>
-        
-function c_addn1()
-{
-    //alert('hii');
-    var addn = $('#addn').val();
-        $.ajax({
-            url: 'ajaxrequest/getAddonRate.php',
-            type: "POST",
-            dataType: 'json',
-            data: {
-                addn : addn,
-            },
-            success: function(data) {
-                console.log(data);
-                $('#price').val(data);
-                
-            }
-         });
-   
-
-}
     </script>
 
 
@@ -146,18 +172,14 @@ function c_addn1()
 
                 <div class="group-form col-md-3">
                     <label class="form_label" for="company_name">Select Customer</label>
-                    <select class="form-controls form-control-sm" required name="customer" id="customer" onchange="custo1()">
+                    <select class="form-controls form-control-sm" required name="customer" id="customer"
+                        onchange="custo1()">
                         <option value="">Select Cutomer</option>
                         <?php
-                            //$query="SELECT DISTINCT `cid`,`full` FROM `customer` ORDER BY `cid` ASC";
-                            //$confirm=mysqli_query($conn,$query) or die(mysqli_error());
-                            //while($loca=mysqli_fetch_array($confirm))
-                            $query="SELECT DISTINCT `full` FROM `customer` ORDER BY `cid` ASC";
-                            $confirm=mysqli_query($conn,$query) or die(mysqli_error());
-                            while($loca=mysqli_fetch_array($confirm))
-                            {?>
-                        <!--<option value="<?php //echo $loca['cid']; ?>"><?php //echo $loca['full']; ?></option>-->
-                            <option><?php echo $loca['full']; ?></option>
+                            $query="SELECT DISTINCT `cid`,`full` FROM `customer` ORDER BY `cid` ASC";
+                            $confirm=mysqli_query($conn,$query);
+                            while($loca=mysqli_fetch_array($confirm)){?>
+                        <option value="<?php echo $loca['cid']; ?>"><?php echo $loca['full']; ?></option>
                         <?php } ?>
                     </select>
                 </div>
@@ -206,7 +228,8 @@ function c_addn1()
 
                 <div class="group-form col-md-3">
                     <label class="form_label" for="company_name">GSTN</label>
-                    <input type="text" class="form-control form-control-sm" required name="gstn" id="gstn" placeholder="GSTN" />
+                    <input type="text" class="form-control form-control-sm" required name="gstn" id="gstn"
+                        placeholder="GSTN" />
                 </div>
             </div><br>
             <hr>
@@ -274,8 +297,11 @@ function c_addn1()
                             <?php } ?>
                         </select>
                     </th>
-                    <th colspan="3"><br/><h5 style="display: none;" id="kgrateshow">Service Rate : <spam id="kgRateShow"></spam> per KG </h5></th>
-                    
+                    <th colspan="3"><br />
+                        <h5 style="display: none;" id="kgrateshow">Service Rate : <spam id="kgRateShow"></spam> per KG
+                        </h5>
+                    </th>
+
                 </tr>
 
 
@@ -291,24 +317,26 @@ function c_addn1()
                         <div>
                             <label class="form_label" for="company_name">Product Ouantity</label>
                             <input type="text" class="form-control form-control-sm" name="productQuantity"
-                                id="productQuantity" />
+                                id="productQuantity" onkeyup="defineRate()" />
                         </div>
                     </th>
                     <th>
-                    <productRate>
+                        <productRate>
                             <label class="form_label" for="company_name">Product Rate</label>
                             <input type="text" class="form-control form-control-sm" readonly name="price1"
                                 id="productRate" />
                         </productRate>
+
                         <productWeight style="display: none;">
                             <label class="form_label" for="company_name">Total Weight In Gram</label>
-                            <input type="text" class="form-control form-control-sm" name="price1"
-                                id="productWeight" onkeyup="calKgRate()" />
+                            <input type="text" class="form-control form-control-sm" name="price1" id="productWeight"
+                                onkeyup="calKgRate()" />
                         </productWeight>
                     </th>
                     <th colspan="2">
                         <label class="form_label" for="company_name">Amount</label>
-                        <input type="text" class="form-control form-control-sm" readonly name="tot" id="productAmount" />
+                        <input type="text" class="form-control form-control-sm" readonly name="tot"
+                            id="productAmount" />
                     </th>
                 </tr>
 
@@ -321,11 +349,10 @@ function c_addn1()
                     </th>
                 </tr>
 
-                <tr style="background-color: #ebf9f7;">
+                <tr style="background-color: #ebf9f7;" class="addonRow" id="addonRow">
                     <td colspan="2">
                         <label class="form_label" for="company_name">Select Addon</label>
-                        <select class="form-controls form-control-sm" required name="addn[]" id="addn"
-                            onchange="c_addn1()">
+                        <select class="form-controls form-control-sm addonName" required name="addn[]">
                             <option value="">Select Addon</option>
                             <?php
                             $query="SELECT DISTINCT `addon` FROM `addon` ORDER BY `id` ASC";
@@ -336,15 +363,15 @@ function c_addn1()
                         </select>
                     </td>
                     <td> <label class="form_label" for="company_name">Addon Rate</label>
-                        <input type="text" class="form-control form-control-sm" readonly name="price[]" id="price" />
+                        <input type="text" class="form-control form-control-sm addonPrice" readonly name="price[]" id="price[]" />
                     </td>
                     <td>
                         <label class="form_label" for="company_name">Add Qty</label>
-                        <input type="text" class="form-control form-control-sm" require name="qtyy[]" id="qtyy" />
+                        <input type="text" class="form-control form-control-sm addonQty" require name="qtyy[]" id="qtyy[]" />
                     </td>
                     <td>
                         <label class="form_label" for="company_name">Total</label>
-                        <input type="text" class="form-control form-control-sm" readonly name="tot[]" id="tot" />
+                        <input type="text" class="form-control form-control-sm addonTot" readonly name="tot[]" id="tot[]" />
                     </td>
                     <td>
                         <br />
@@ -357,15 +384,15 @@ function c_addn1()
                 <tr style="background-color: #ebf9f7;">
                     <th colspan="2">
                         <label class="form_label" for="company_name">Remark</label>
-                        <input type="text" class="form-control form-control-sm"  name="remark" id="remark" />
+                        <input type="text" class="form-control form-control-sm" name="remark" id="remark" />
                     </th>
                     <th style="width: 20%;">
                         <label class="form_label" for="company_name"></label>
-                        <button type="button" class="btn btn-sm btn-info col-md-12 order-ajax">Add Item</button>
+                        <button type="button" class="btn btn-sm btn-info col-md-12 order-ajax1" onclick="addItem()">Add Item</button>
                     </th>
                     <th style="width: 20%;"><label class="form_label" for="company_name"></label>
-                    <button type="reset" name=""
-                            class="btn btn-sm btn-danger col-md-12">clear</button></th>
+                        <button type="reset" name="" class="btn btn-sm btn-danger col-md-12">clear</button>
+                    </th>
                     <th colspan="5"></th>
                 </tr>
             </tfoot>
@@ -443,20 +470,7 @@ function c_addn1()
                             <td>100</td>
                         </tr>
                     </item>
-                    <item>
-                        <tr>
-                            <th rowspan="2">3.</th>
-                            <th>Service</th>
-                            <th colspan="5">Wash & Iron (Unit Wise)</th>
-                        </tr>
-                        <tr>
-                            <th>Product</th>
-                            <td colspan="2">Coat</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>100</td>
-                        </tr>
-                    </item>
+                    
 
                     <totalBill>
                         <tr>
@@ -627,43 +641,37 @@ $(document).ready(function() {
 });
 </script>
 <script>
-
-function custo1(){
-    alert('hiiiiii');
+function custo1() {
     //var wingname = document.getElementById('customer').value;
-    var wingname=$('#customer').val();
+    var wingname = $('#customer').val();
     //alert(wingname);
-        $.ajax({
-            url: 'ser_ajax.php',
-            type: "POST",
-            dataType: 'json',
-            data: {
-                wingname : wingname,
-            },
-            success: function(data) {
-            //alert('hii');
+    console.log($.ajax({
+        url: 'ajaxrequest/getCustomer.php',
+        type: "POST",
+        dataType: 'json',
+        data: {
+            wingname: wingname,
+        },
+        success: function(data) {
             console.log(data);
-            //alert("hii")
-            $("#cust").val(data[0]);
-            $("#mob").val(data[1]);
-            $("#adds").val(data[2]);
-            $("#hno").val(data[3]);
-            $("#zip").val(data[4]);
-            $("#email").val(data[5]);
-            $("#adds1").val(data[6]);
-            $("#gstn").val(data[7]);
-            window.g_x2 = data[2];
-            
+            $("#cust").val(data[0].full);
+            $("#mob").val(data[0].mobile);
+            $("#adds").val(data[0].adds);
+            $("#hno").val(data[0].hno);
+            $("#zip").val(data[0].zip);
+            $("#email").val(data[0].email);
+            $("#adds1").val(data[0].adds1);
+            $("#gstn").val(data[0].gstn);
+            window.g_x2 = data[0].adds;
         }
 
-    });
+    }));
 
 }
 </script>
 
 <script>
-function service1()
-{
+function service1() {
     //alert('hii');
     var service = $('#service').val();
     var orderUnit = $('#orderUnit').val();
@@ -673,24 +681,24 @@ function service1()
             type: "POST",
             dataType: 'json',
             data: {
-                service : service,
+                service: service,
             },
             success: function(data) {
                 console.log(data);
                 $('#kgrateshow').show();
                 $('#kgRateShow').html(data);
             }
-         });
+        });
     }
-        //alert('hello');
-        let log = $.ajax({
+    //alert('hello');
+    let log = $.ajax({
         url: 'ajaxrequest/getProduct.php',
         type: "POST",
         dataType: 'json',
         data: {
-            service : service,
+            service: service,
         },
-        success: function(data){
+        success: function(data) {
             console.log(data);
             $("#product option").remove();
             var opt = document.createElement("option");
@@ -707,8 +715,6 @@ function service1()
         }
     });
     console.log(log);
-    
-    
 }
 
 
@@ -716,53 +722,65 @@ function product1() {
     var product = $('#product').val();
     var orderUnit = $('#orderUnit').val();
     var ser = $("#service").val();
-    if(orderUnit == "unit")
-    {
-       let log =  $.ajax({
-        url: 'ajaxrequest/getProductRate.php',
-        type: "POST",
-        dataType: 'json',
-        data: {
-            product : product,
-            ser: ser
-        },
-        success: function(data) {
-            $("#productRate").val(data);
-        }
-    });
-    console.log(log);
-    } 
+    if (orderUnit == "unit") {
+        let log = $.ajax({
+            url: 'ajaxrequest/getProductRate.php',
+            type: "POST",
+            dataType: 'json',
+            data: {
+                product: product,
+                ser: ser
+            },
+            success: function(data) {
+                $("#productRate").val(data);
+            }
+        });
+        console.log(log);
+    }
 }
-</script>
-<script>
-$(document).ready(function() {
-    $("#productQuantity").blur(function() {
-        //alert("hii");            
-        var price = parseFloat($("#productRate").val());
-        var qty = parseFloat($("#productQuantity").val());
-        //alert(mrp)
-        //var mrp1 =  parseFloat($("#onemrp").val());
-        //alert(mrp+"--"+qty);                    
-        $("#productAmount").val((qty * price).toFixed(0));
 
+function defineRate() {
+    var price = parseFloat($("#productRate").val());
+    var qty = parseFloat($("#productQuantity").val());
+    $("#productAmount").val((qty * price).toFixed(0));
+}
+
+function addItem()
+{
+    var orderId = $('#orderId').val();
+
+    // get all addons
+    var vals = [];
+    let i = 0;
+    $('.addonName').each(function(index, item) {
+        vals[i] = [];
+        let addonRate = $(item).parent().parent().find('.addonPrice').val();
+        let addonQty = $(item).parent().parent().find('.addonQty').val();
+        let addonTot = $(item).parent().parent().find('.addonTot').val();
+        vals[i].push(item.value);
+        vals[i].push(addonRate);
+        vals[i].push(addonQty);
+        vals[i].push(addonTot);
+        i++;
     });
-    $("#qtyy").blur(function() {
-        //alert("hii");            
-        var price = parseFloat($("#price").val());
-        var qty = parseFloat($("#qtyy").val());
-        //alert(mrp)
-        //var mrp1 =  parseFloat($("#onemrp").val());
-        //alert(mrp+"--"+qty);                    
-        $("#tot").val((qty * price).toFixed(0));
+    console.log(vals);
+    alert(vals);
+}
 
-    });
-});
-</script>
+function addOrder() {
+    var orderId = $('#orderId').val();
+    var customerId = $('#customer').val();
+    var pickupDate = $('#pickupDate').val();
+    var delivaryType = $('#delivaryType').val();
+
+    //    order tabel information
+    var orderUnit = $('#orderUnit').val();
+    var service = $('#service').val();
+    alert(delivaryType);
+}
 
 
 
-
-<script>
 function kgWiseRate() {
     // alert('hiiiiii');
     var orderUnit = $('#orderUnit').val();
@@ -780,6 +798,7 @@ function kgWiseRate() {
     console.log(orderUnit);
 
 }
+
 </script>
 <script type="text/javascript">
 function submitdata() {
@@ -815,26 +834,12 @@ function clearInput() {
     $('#productWeight').val('');
 }
 
-function calKgRate()
-{
+function calKgRate() {
     let kgRate = $('#kgRateShow').html();
     let gramRate = kgRate / 1000;
-    let productWeight =  $('#productWeight').val();
+    let productWeight = $('#productWeight').val();
     let amount = gramRate * productWeight;
     $('#productAmount').val(amount);
 }
-
-function addOrder() {
-    var orderId = $('#orderId').val();
-    var customerId = $('#customer').val();
-    var pickupDate = $('#pickupDate').val();
-    var delivaryType = $('#delivaryType').val();
-
-    //    order tabel information
-    var orderUnit = $('#orderUnit').val();
-    var service = $('#service').val();
-    alert(delivaryType);
-}
-
 
 </script>
