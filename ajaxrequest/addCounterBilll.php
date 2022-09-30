@@ -55,13 +55,15 @@ $paymentType = $_POST['paymentType'];
 
         $subject = "About Order Bill";
 		$message = "<p>Your order id id '$orderId' and the bill Amount is '$billAmount'.</p>";
+
+        //  Put here from mail to pass the mail from this mail id
 		$headers = "From: kittutilavi27@gmail.com";
 		$headers .= "MIME-Version: 1.0"."\r\n";
 		$headers .= "Content-type:text/html;charset=UTF-8"."\r\n";
 		if (mail($email[0], $subject, $message, $headers)) {
             echo "Order Placed Successfully";
 		} else {
-            echo "Mail has been not sent.";
+            echo "Order Placed Successfully. \n But Mail has been not sent.";
 		}
     }
     
